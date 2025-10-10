@@ -1,0 +1,12 @@
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: docker/api/Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - file_storage:/app/uploads
+
+volumes:
+  file_storage:

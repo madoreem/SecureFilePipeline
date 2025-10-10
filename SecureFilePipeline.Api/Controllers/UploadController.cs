@@ -15,8 +15,7 @@ public class UploadController : ControllerBase
     public UploadController(ILogger<UploadController> logger, IConfiguration config)
     {
         _logger = logger;
-        _uploadPath = config["FileStorage:UploadPath"] 
-                        ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "FileUploader", "uploads");
+        _uploadPath = config["FileStorage:UploadPath"] ?? "/app/uploads";
 
         if (!Directory.Exists(_uploadPath))
         {
