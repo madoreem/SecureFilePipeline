@@ -3,9 +3,15 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
-COPY SecureFilePipeline.MetadataService/SecureFilePipeline.MetadataService.csproj ./SecureFilePipeline.MetadataService/
+
+COPY SecureFilePipeline.MetadataService/*.csproj ./SecureFilePipeline.MetadataService/
+COPY SecureFilePipeline.Shared/*.csproj ./SecureFilePipeline.Shared/
+
 RUN dotnet restore ./SecureFilePipeline.MetadataService/SecureFilePipeline.MetadataService.csproj
-COPY . .
+
+COPY SecureFilePipeline.MetadataService/. ./SecureFilePipeline.MetadataService/
+COPY SecureFilePipeline.Shared/. ./SecureFilePipeline.Shared/
+
 RUN dotnet publish ./SecureFilePipeline.MetadataService/SecureFilePipeline.MetadataService.csproj -c Release -o /app/publish
 
 FROM base AS final

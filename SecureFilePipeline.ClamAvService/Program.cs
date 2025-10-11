@@ -1,5 +1,6 @@
 using System.Net.Sockets;
 using System.Text;
+using SecureFilePipeline.Shared;
 
 namespace SecureFilePipeline.ClamAvService;
 
@@ -10,6 +11,7 @@ public class Program
     private const string _quarantinePath = "/app/quarantine";
     private const string _clamAvHost = "clamav";
     private const int _clamAvPort = 3310;
+    private static readonly FileDebouncer _debouncer = new FileDebouncer(TimeSpan.FromSeconds(2));
 
     public static async Task Main()
     {
@@ -34,6 +36,10 @@ public class Program
     private static async Task OnNewFileAsync(string filePath)
     {
         var fileName = Path.GetFileName(filePath);
+
+        if (!_debouncer.ShouldProcess(fileName))
+            return;
+
         if (fileName.EndsWith(".tmp", StringComparison.OrdinalIgnoreCase))
             return;
 

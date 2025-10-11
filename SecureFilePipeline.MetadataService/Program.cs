@@ -1,6 +1,7 @@
 using SecureFilePipeline.MetadataService.Interfaces;
 using SecureFilePipeline.MetadataService.Models;
 using SecureFilePipeline.MetadataService.Extractors;
+using SecureFilePipeline.Shared;
 
 namespace SecureFilePipeline.MetadataService;
 
@@ -8,6 +9,7 @@ public class Program
 {
     private const string _scannedPath = "/app/scanned";
     private const string _metadataPath = "/app/processed";
+    private static readonly FileDebouncer _debouncer = new FileDebouncer(TimeSpan.FromSeconds(2));
 
     private static readonly List<IMetadataExtractor> _extractors = new()
     {
@@ -35,6 +37,11 @@ public class Program
 
     private static async Task OnNewFileAsync(string filePath)
     {
+        var fileName = Path.GetFileName(filePath);
+
+        if (!_debouncer.ShouldProcess(fileName))
+            return;
+
         await Task.Delay(1000);
 
         if (!File.Exists(filePath))
@@ -49,6 +56,8 @@ public class Program
         }
 
         var metadata = await extractor.ExtractAsync(filePath);
+
+        Console.WriteLine($"[META] {fileName}:");
         foreach (var kv in metadata.Properties)
             Console.WriteLine($"   - {kv.Key}: {kv.Value}");
         
