@@ -10,11 +10,14 @@ services:
     depends_on:
       - clamav
       - clamav-service
+    restart: always
+
 
   clamav:
     image: clamav/clamav:latest
     ports:
       - "3310:3310"
+    restart: always
 
   clamav-service:
     build:
@@ -28,8 +31,20 @@ services:
       - quarantine_storage:/app/quarantine
     restart: always 
 
+  metadata-service:
+    build: 
+      context: .
+      dockerfile: docker/metadata/Dockerfile
+    depends_on:
+      - clamav-service
+    volumes:
+      - scanned_storage:/app/scanned
+      - processed_storage:/app/processed
+    restart: always
+
 
 volumes:
   upload_storage:
   scanned_storage:
   quarantine_storage:
+  processed_storage:
