@@ -11,7 +11,8 @@ public class Program
 
     private static readonly List<IMetadataExtractor> _extractors = new()
     {
-        new PdfMetadataExtractor()
+        new PdfMetadataExtractor(),
+        new DocxMetadataExtractor()
     };
 
     public static async Task Main()
