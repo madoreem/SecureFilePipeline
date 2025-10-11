@@ -46,15 +46,20 @@ public class UploadController : ControllerBase
             }
 
             var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
-            var filePath = Path.Combine(_uploadPath, uniqueFileName);
+            var tempFileName = $"{uniqueFileName}.tmp";
 
-            await using (var stream = new FileStream(filePath, FileMode.Create))
+            var tempFilePath = Path.Combine(_uploadPath, tempFileName);
+            var finalFilePath = Path.Combine(_uploadPath, uniqueFileName);
+
+            await using (var stream = new FileStream(tempFileName, FileMode.CreateNew, FileAccess.Write))
             {
                 await file.CopyToAsync(stream);
             }
 
-            _logger.LogInformation("File uploaded: {FileName} (Original: {OriginalFileName})",
-                uniqueFileName, file.FileName);
+            System.IO.File.Move(tempFileName, finalFilePath);
+
+            _logger.LogInformation("File uploaded successfully: {FinalFile} (temp: {TempFile}, original: {Original})",
+                finalFilePath, tempFilePath, file.FileName);
 
             return Ok(new
             {

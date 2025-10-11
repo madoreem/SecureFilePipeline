@@ -6,7 +6,30 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - file_storage:/app/uploads
+      - upload_storage:/app/uploads
+    depends_on:
+      - clamav
+      - clamav-service
+
+  clamav:
+    image: clamav/clamav:latest
+    ports:
+      - "3310:3310"
+
+  clamav-service:
+    build:
+      context: .
+      dockerfile: docker/clamav/Dockerfile
+    depends_on:
+      - clamav
+    volumes:
+      - upload_storage:/app/uploads
+      - scanned_storage:/app/scanned
+      - quarantine_storage:/app/quarantine
+    restart: always 
+
 
 volumes:
-  file_storage:
+  upload_storage:
+  scanned_storage:
+  quarantine_storage:
