@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SecureFilePipeline.Db\SecureFilePipeline.Db.csproj" />
+    <ProjectReference Include="..\SecureFilePipeline.Shared\SecureFilePipeline.Shared.csproj" />
   </ItemGroup>
 
 </Project>
