@@ -1,6 +1,6 @@
 namespace SecureFilePipeline.MetadataService.Interfaces;
 
-using SecureFilePipeline.MetadataService.Models;
+using SecureFilePipeline.Db.Entities;
 
 public interface IMetadataExtractor
 {

@@ -1,14 +1,16 @@
+using Microsoft.EntityFrameworkCore;
 using SecureFilePipeline.MetadataService.Interfaces;
-using SecureFilePipeline.MetadataService.Models;
 using SecureFilePipeline.MetadataService.Extractors;
 using SecureFilePipeline.Shared;
+using SecureFilePipeline.Db;
+
 
 namespace SecureFilePipeline.MetadataService;
 
 public class Program
 {
     private const string _scannedPath = "/app/scanned";
-    private const string _metadataPath = "/app/processed";
+    private const string _processedPath = "/app/processed";
     private static readonly FileDebouncer _debouncer = new FileDebouncer(TimeSpan.FromSeconds(2));
 
     private static readonly List<IMetadataExtractor> _extractors = new()
@@ -22,7 +24,12 @@ public class Program
     public static async Task Main()
     {
         Directory.CreateDirectory(_scannedPath);
-        Directory.CreateDirectory(_metadataPath);
+        Directory.CreateDirectory(_processedPath);
+
+        var connectionString = DbConfig.GetConnectionString();
+        var optionsBuilder = new DbContextOptionsBuilder<FileMetadataContext>();
+        optionsBuilder.UseNpgsql(connectionString);
+        var dbOptions = optionsBuilder.Options;
 
         var watcher = new FileSystemWatcher(_scannedPath)
         {
@@ -31,13 +38,13 @@ public class Program
             NotifyFilter = NotifyFilters.FileName | NotifyFilters.Size
         };
 
-        watcher.Created += async (s, e) => await OnNewFileAsync(e.FullPath);
-        watcher.Changed += async (s, e) => await OnNewFileAsync(e.FullPath);
+        watcher.Created += async (s, e) => await OnNewFileAsync(e.FullPath, dbOptions);
+        watcher.Changed += async (s, e) => await OnNewFileAsync(e.FullPath, dbOptions);
 
         await Task.Delay(-1);
     }
 
-    private static async Task OnNewFileAsync(string filePath)
+    private static async Task OnNewFileAsync(string filePath, DbContextOptions<FileMetadataContext> dbOptions)
     {
         var fileName = Path.GetFileName(filePath);
 
@@ -58,17 +65,24 @@ public class Program
         }
 
         var metadata = await extractor.ExtractAsync(filePath);
+        try
+        {
+            await using var dbContext = new FileMetadataContext(dbOptions);
+            await dbContext.Database.EnsureCreatedAsync();
 
-        Console.WriteLine($"[META] {metadata.FileName}:");
-        Console.WriteLine($"   - Type: {metadata.FileType}");
-        Console.WriteLine($"   - Size: {metadata.FileSize} bytes");
-        Console.WriteLine($"   - CreatedAt: {metadata.CreatedAt:O}");
+            dbContext.Files.Add(metadata);
+            await dbContext.SaveChangesAsync();
 
-        foreach (var kv in metadata.Properties)
-            Console.WriteLine($"   - {kv.Key}: {kv.Value}");
+            Console.WriteLine($"[META] {metadata.FileName} saved to DB with Id={metadata.Id}");
 
-
-        var dest = Path.Combine(_metadataPath, Path.GetFileName(filePath));
-        File.Move(filePath, dest, true);
+            var destPath = Path.Combine(_processedPath, fileName);
+            File.Move(filePath, destPath, true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[ERROR] Failed to save {metadata.FileName}: {ex.Message}");
+            if (ex.InnerException != null)
+                Console.WriteLine($"[INNER] {ex.InnerException.Message}");
+        }
     }
 }

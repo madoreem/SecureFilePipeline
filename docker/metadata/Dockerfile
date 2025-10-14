@@ -6,11 +6,13 @@ WORKDIR /src
 
 COPY SecureFilePipeline.MetadataService/*.csproj ./SecureFilePipeline.MetadataService/
 COPY SecureFilePipeline.Shared/*.csproj ./SecureFilePipeline.Shared/
+COPY SecureFilePipeline.Db/*.csproj ./SecureFilePipeline.Db/
 
 RUN dotnet restore ./SecureFilePipeline.MetadataService/SecureFilePipeline.MetadataService.csproj
 
 COPY SecureFilePipeline.MetadataService/. ./SecureFilePipeline.MetadataService/
 COPY SecureFilePipeline.Shared/. ./SecureFilePipeline.Shared/
+COPY SecureFilePipeline.Db/. ./SecureFilePipeline.Db/
 
 RUN dotnet publish ./SecureFilePipeline.MetadataService/SecureFilePipeline.MetadataService.csproj -c Release -o /app/publish
 

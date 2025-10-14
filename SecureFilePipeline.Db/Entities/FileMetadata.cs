@@ -1,7 +1,8 @@
-namespace SecureFilePipeline.MetadataService.Models;
+namespace SecureFilePipeline.Db.Entities;
 
 public class FileMetadata
 {
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string FileName { get; set; } = "";
     public string FileType { get; set; } = "";
     public long FileSize { get; set; }

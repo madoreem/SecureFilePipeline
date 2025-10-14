@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureFilePipeline.Metadata
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureFilePipeline.Shared", "SecureFilePipeline.Shared\SecureFilePipeline.Shared.csproj", "{1E4C587B-9676-4E04-A863-67F86407B7EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureFilePipeline.Db", "SecureFilePipeline.Db\SecureFilePipeline.Db.csproj", "{D8DA1BA4-C063-4429-A603-861D223452CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,18 @@ Global
 		{1E4C587B-9676-4E04-A863-67F86407B7EF}.Release|x64.Build.0 = Release|Any CPU
 		{1E4C587B-9676-4E04-A863-67F86407B7EF}.Release|x86.ActiveCfg = Release|Any CPU
 		{1E4C587B-9676-4E04-A863-67F86407B7EF}.Release|x86.Build.0 = Release|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Debug|x64.Build.0 = Debug|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Debug|x86.Build.0 = Debug|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Release|x64.ActiveCfg = Release|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Release|x64.Build.0 = Release|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Release|x86.ActiveCfg = Release|Any CPU
+		{D8DA1BA4-C063-4429-A603-861D223452CE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

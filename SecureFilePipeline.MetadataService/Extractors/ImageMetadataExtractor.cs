@@ -1,5 +1,5 @@
 using SecureFilePipeline.MetadataService.Interfaces;
-using SecureFilePipeline.MetadataService.Models;
+using SecureFilePipeline.Db.Entities;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using System.IO;

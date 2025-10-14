@@ -1,5 +1,5 @@
 using SecureFilePipeline.MetadataService.Interfaces;
-using SecureFilePipeline.MetadataService.Models;
+using SecureFilePipeline.Db.Entities;
 using UglyToad.PdfPig;
 
 namespace SecureFilePipeline.MetadataService.Extractors;
