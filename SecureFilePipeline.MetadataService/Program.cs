@@ -14,7 +14,9 @@ public class Program
     private static readonly List<IMetadataExtractor> _extractors = new()
     {
         new PdfMetadataExtractor(),
-        new DocxMetadataExtractor()
+        new DocxMetadataExtractor(),
+        new TxtMetadataExtractor(),
+        new ImageMetadataExtractor()
     };
 
     public static async Task Main()
@@ -57,10 +59,15 @@ public class Program
 
         var metadata = await extractor.ExtractAsync(filePath);
 
-        Console.WriteLine($"[META] {fileName}:");
+        Console.WriteLine($"[META] {metadata.FileName}:");
+        Console.WriteLine($"   - Type: {metadata.FileType}");
+        Console.WriteLine($"   - Size: {metadata.FileSize} bytes");
+        Console.WriteLine($"   - CreatedAt: {metadata.CreatedAt:O}");
+
         foreach (var kv in metadata.Properties)
             Console.WriteLine($"   - {kv.Key}: {kv.Value}");
-        
+
+
         var dest = Path.Combine(_metadataPath, Path.GetFileName(filePath));
         File.Move(filePath, dest, true);
     }

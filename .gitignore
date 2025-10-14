@@ -45,6 +45,7 @@ appsettings.Development.json
 appsettings.Local.json
 appsettings.*.local.json
 secrets.json
+project.md
 
 # ---- Test results ----
 TestResults/
