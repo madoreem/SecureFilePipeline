@@ -10,7 +10,7 @@ public class UploadController : ControllerBase
     private readonly ILogger<UploadController> _logger;
     private readonly string _uploadPath;
     private const long MaxFileSize = 100 * 1024 * 1024; // 100Mb
-    private static readonly string[] AllowedExtensions = { ".pdf", ".docx", ".doc", ".txt", ".png", ".jpg", ".jpeg" };
+    private static readonly string[] AllowedExtensions = { ".pdf", ".docx", ".txt", ".png", ".jpg", ".jpeg" };
 
     public UploadController(ILogger<UploadController> logger, IConfiguration config)
     {
