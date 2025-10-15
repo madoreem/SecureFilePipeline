@@ -46,4 +46,6 @@ Pour lancer le projet, assurez-vous que Docker et Docker Compose sont installés
 docker-compose up --build
 ```
 
+**Important** : Au premier lancement, l'initialisation de l'image Docker de ClamAV peut prendre quelques temps. Veuillez patienter jusqu'à ce que le message `socket found, clamd started` apparaisse dans les logs du conteneur `clamav` avant d'envoyer des fichiers.
+
 L'API sera alors accessible à l'adresse `http://localhost:8080`.
